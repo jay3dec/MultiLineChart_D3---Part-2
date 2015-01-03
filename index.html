@@ -142,11 +142,19 @@
                         .attr("class", "y axis")
                         .attr("transform", "translate(" + (MARGINS.left) + ",0)")
                         .call(yAxis);
-
+                        
+                    var lineGen = d3.svg.line()
+                        .x(function(d) {
+                            return xScale(d.year);
+                        })
+                        .y(function(d) {
+                            return yScale(d.sale);
+                        })
+                        .interpolate("basis");
 
                     dataGroup.forEach(function(d,i) {
                         vis.append('svg:path')
-                        .attr('d', lineGenFun(d.values,xScale,yScale))
+                        .attr('d', lineGen(d.values))
                         .attr('stroke', function(d,j) { 
                                 return "hsl(" + Math.random() * 360 + ",100%,50%)";
                         })
@@ -175,18 +183,7 @@
                     
                 }
 
-                function lineGenFun(dt, xScale, yScale) {
-                    var ln = d3.svg.line()
-                        .x(function(d) {
-                            return xScale(d.year);
-                        })
-                        .y(function(d) {
-                            return yScale(d.sale);
-                        })
-                        .interpolate("basis");
-                    return ln(dt);
-
-                }
+                
 
                 InitChart();
             </script>
